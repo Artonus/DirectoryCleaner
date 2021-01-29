@@ -45,7 +45,7 @@ namespace DirectoryCleaner
                 var files = cleaner.CollectFiles();
                 if (files.Any())
                 {
-                    cleaner.Clean(files); // usunięcie niepasujących do wyszukania plików
+                    cleaner.Clean(files); // remove files that don't fit the search 
                 }
 
             }

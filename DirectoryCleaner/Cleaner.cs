@@ -59,7 +59,7 @@ namespace DirectoryCleaner
         private IEnumerable<FileInfo> GetFilesToDelete(List<FileInfo> files)
         {
             var filesToDelete = new List<FileInfo>();
-            var operationFiles = files.Where(f => f.LastWriteTime < DateTime.Now.Date.AddDays(_daysBack * -1));
+            var operationFiles = files.Where(f => f.LastWriteTime < DateTime.Now.Date.AddDays(_daysBack * -1)).ToList();
 
             if (operationFiles.Any() == false)
             {
@@ -81,7 +81,7 @@ namespace DirectoryCleaner
         private FileInfo FindNextDayFile(IEnumerable<FileInfo> files)
         {
             FileInfo match;
-            int i = 0;
+            var i = 0;
             bool searchForward = files.Any(f => f.LastWriteTime.Day > _searchDay);
             do
             {
