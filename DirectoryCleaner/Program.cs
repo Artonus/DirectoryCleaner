@@ -18,7 +18,7 @@ namespace DirectoryCleaner
             }
             else
             {
-                Console.WriteLine("Nie podano parametru ścieżka (-p), program zostanie zatrzymany.");
+                Console.WriteLine("The parameter \"path\" (-p) has not been passed, program is stopping.");
                 return;
             }
             var argMask = parser.GetArgumentValue(args, "-m"); // mask
@@ -28,7 +28,7 @@ namespace DirectoryCleaner
             }
             else
             {
-                Console.WriteLine("Nie podano parametru maska (-m), program zostanie zatrzymany.");
+                Console.WriteLine("The parameter \"mask\" (-m) has not been passed, program is stopping.");
                 return;
             }
             var argSearchDay = parser.GetArgumentValue(args, "-s"); // searched day
@@ -51,13 +51,11 @@ namespace DirectoryCleaner
             }
             catch (UnauthorizedAccessException ex)
             {
-                Console.WriteLine($"Brak wystarczających uprawnień do podanego katalogu: {ex.Message}");
-                return;
+                Console.WriteLine($"No permissions to access the catalog: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Wystąpił niespodziewany błąd: {ex.Message}");
-                return;
+                Console.WriteLine($"The unexpected error has occured: {ex.Message}");
             }
         }
     }

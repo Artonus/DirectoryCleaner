@@ -21,6 +21,7 @@ namespace DirectoryCleaner
             _daysBack = daysBack;
             _testMode = testMode;
         }
+
         public List<FileInfo> CollectFiles()
         {
             List<FileInfo> files = new List<FileInfo>();
@@ -34,17 +35,20 @@ namespace DirectoryCleaner
                 var info = new FileInfo(filePath);
                 files.Add(info);
             }
+
             var grouped = files.GroupBy(f => f.LastWriteTime.Year.ToString() + f.LastWriteTime.Month.ToString("00"),
                 f => f,
-                (key, fls) => new { Date = key, Files = fls.ToList() });
+                (key, fls) => new {Date = key, Files = fls.ToList()});
 
             foreach (var item in grouped)
             {
                 var toDelete = GetFilesToDelete(item.Files);
                 files.AddRange(toDelete);
             }
+
             return files;
         }
+
         public void Clean(IEnumerable<FileInfo> filesToDelete)
         {
             foreach (var file in filesToDelete)
@@ -62,20 +66,15 @@ namespace DirectoryCleaner
             var operationFiles = files.Where(f => f.LastWriteTime < DateTime.Now.Date.AddDays(_daysBack * -1)).ToList();
 
             if (operationFiles.Any() == false)
-            {
                 return filesToDelete;
-            }
 
             var match = operationFiles.FirstOrDefault(f => f.LastWriteTime.Day == _searchDay);
-            if (match == null)
-            {
+            if (match is null)
                 match = FindNextDayFile(operationFiles);
-            }
 
-            filesToDelete.AddRange(operationFiles.Except(new[] { match }));
+            filesToDelete.AddRange(operationFiles.Except(new[] {match}));
 
             return filesToDelete;
-
         }
 
         private FileInfo FindNextDayFile(IEnumerable<FileInfo> files)
