@@ -25,7 +25,7 @@ namespace DirectoryCleaner
         public List<FileInfo> CollectFiles()
         {
             List<FileInfo> files = new List<FileInfo>();
-
+            List<FileInfo> filesToDelete = new List<FileInfo>();
             // Attempt to get a list of security permissions from the folder. 
             // This will raise an exception if the path is read only or do not have access to view the permissions.
             var filePaths = Directory.GetFiles(_basePath, _mask, SearchOption.AllDirectories);
@@ -43,10 +43,10 @@ namespace DirectoryCleaner
             foreach (var item in grouped)
             {
                 var toDelete = GetFilesToDelete(item.Files);
-                files.AddRange(toDelete);
+                filesToDelete.AddRange(toDelete);
             }
 
-            return files;
+            return filesToDelete;
         }
 
         public void Clean(IEnumerable<FileInfo> filesToDelete)
